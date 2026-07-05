@@ -69,7 +69,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("⚡ Clasificador MNIST con Reducción de Dimensionalidad (PCA, K-Means & SVM) - Allan Manuel Orellana Orellana 20211920128")
+st.title(" Clasificador MNIST con Reducción de Dimensionalidad (PCA, K-Means & SVM) - Allan Manuel Orellana Orellana 20211920128")
 st.markdown("""
 Esta aplicación web utiliza **PCA** para reducir las dimensiones de imágenes de dígitos manuscritos, 
 **K-Means** para analizar su agrupación en clústeres y una **Máquina de Vectores de Soporte (SVM)** para predecir el dígito correcto.
@@ -116,7 +116,7 @@ st.sidebar.metric(label="Componentes Entrenados PCA", value=f"{metadata.get('n_c
 st.sidebar.metric(label="Varianza Explicada Acumulada", value=f"{metadata.get('varianza_explicada', 0.0)*100:.2f}%")
 
 st.sidebar.markdown("---")
-st.sidebar.header("⚙️ Ajustes de Compresión")
+st.sidebar.header("Ajustes de Compresión")
 
 max_componentes = metadata.get("n_components_pca", 35)
 n_componentes_seleccionados = st.sidebar.slider(
@@ -127,7 +127,7 @@ n_componentes_seleccionados = st.sidebar.slider(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.header("✏️ Selección de Muestra")
+st.sidebar.header("Selección de Muestra")
 
 @st.cache_data
 def cargar_imagenes_muestra():
@@ -158,7 +158,7 @@ else:
 # REPOSICIONAMIENTO CENTRAL: 1. Área de Inferencia y Clasificación (Arriba)
 # ==========================================
 st.markdown("<br>", unsafe_allow_html=True)
-st.subheader("🔮 Inferencia y Clasificación en Tiempo Real")
+st.subheader("Inferencia y Clasificación en Tiempo Real")
 
 col_img, col_pred = st.columns([1, 2.2], gap="large")
 
@@ -193,7 +193,7 @@ with col_pred:
     clase_predicha_svm = svm_model.predict(imagen_pca_completa)[0]
     
     st.info(f"🔹 **Agrupación K-Means (No Supervisado):** `Clúster {cluster_predicho}`")
-    st.success(f"🎯 **Clasificación Final SVM (Supervisado):** `Dígito {clase_predicha_svm}`")
+    st.success(f"**Clasificación Final SVM (Supervisado):** `Dígito {clase_predicha_svm}`")
     
     st.markdown(f"""
     **Explicación del Proceso:** La imagen original de 784 dimensiones (28x28 píxeles) extraída del archivo CSV se comprimió usando los componentes principales de PCA. 
@@ -206,7 +206,7 @@ st.markdown("<hr style='border: 1px solid #232D3F;'>", unsafe_allow_html=True)
 # ==========================================
 # REPOSICIONAMIENTO CENTRAL: 2. Estructura de Gráficas Geométricas (Abajo)
 # ==========================================
-st.subheader("📈 Topología Espacial del Modelo")
+st.subheader("Topología Espacial del Modelo")
 col_graph1, col_graph2 = st.columns(2, gap="large")
 
 with col_graph1:
