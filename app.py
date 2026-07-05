@@ -14,7 +14,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Clasificador MNIST con Reducción de Dimensionalidad (PCA, K-Means & SVM) - Joksan Zavala - 20201900395")
+st.title("Clasificador MNIST con Reducción de Dimensionalidad (PCA, K-Means & SVM) -Allan Manuel Orellana Orellana 20211920128")
 st.markdown("""
 Esta aplicación web utiliza **PCA** para reducir las dimensiones de imágenes de dígitos manuscritos, 
 **K-Means** para analizar su agrupación en clústeres y una **Máquina de Vectores de Soporte (SVM)** para predecir el dígito correcto.
