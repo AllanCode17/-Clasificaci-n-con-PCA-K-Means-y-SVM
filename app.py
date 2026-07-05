@@ -69,7 +69,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("⚡ Clasificador MNIST con Reducción de Dimensionalidad (PCA, K-Means & SVM) - Allan Manuel Orellana Orellana 20211920128")
+st.title("Clasificador MNIST con Reducción de Dimensionalidad (PCA, K-Means & SVM) - Allan Manuel Orellana Orellana 20211920128")
 st.markdown("""
 Esta aplicación web utiliza **PCA** para reducir las dimensiones de imágenes de dígitos manuscritos, 
 **K-Means** para analizar su agrupación en clústeres y una **Máquina de Vectores de Soporte (SVM)** para predecir el dígito correcto.
@@ -102,21 +102,20 @@ def cargar_modelos_y_datos():
 pca_model, kmeans_model, svm_model, metadata, df_pca = cargar_modelos_y_datos()
 
 if pca_model is None or svm_model is None or kmeans_model is None:
-    st.error("❌ No se encontraron los modelos en la carpeta `models/`. Asegúrate de haber subido los archivos .pkl correctamente.")
+    st.error("No se encontraron los modelos en la carpeta models/. Asegúrate de haber subido los archivos .pkl correctamente.")
     st.stop()
 
 # ==========================================
-# REPOSICIONAMIENTO: Panel Lateral de Control y Métricas Globales
+# Panel Lateral de Control y Métricas Globales
 # ==========================================
-st.sidebar.header("📊 Desempeño del Sistema")
+st.sidebar.header("Desempeño del Sistema")
 
-# Movimos las métricas al Sidebar para liberar espacio en el área de gráficos
 st.sidebar.metric(label="Precisión SVM (Accuracy)", value=f"{metadata.get('accuracy_score_svm', 0.0)*100:.2f}%")
 st.sidebar.metric(label="Componentes Entrenados PCA", value=f"{metadata.get('n_components_pca', 0)}")
 st.sidebar.metric(label="Varianza Explicada Acumulada", value=f"{metadata.get('varianza_explicada', 0.0)*100:.2f}%")
 
 st.sidebar.markdown("---")
-st.sidebar.header("⚙️ Ajustes de Compresión")
+st.sidebar.header("Ajustes de Compresión")
 
 max_componentes = metadata.get("n_components_pca", 35)
 n_componentes_seleccionados = st.sidebar.slider(
@@ -127,7 +126,7 @@ n_componentes_seleccionados = st.sidebar.slider(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.header("✏️ Selección de Muestra")
+st.sidebar.header("Selección de Muestra")
 
 @st.cache_data
 def cargar_imagenes_muestra():
@@ -149,16 +148,16 @@ if X_raw is not None:
     imagen_seleccionada = X_raw[idx_imagen]
     etiqueta_real = y_raw[idx_imagen]
 else:
-    st.sidebar.error("❌ Archivo `mnist_sample.csv` no encontrado.")
+    st.sidebar.error("Archivo mnist_sample.csv no encontrado.")
     imagen_seleccionada = np.zeros(784)
     imagen_seleccionada[14*28:15*28] = 255
     etiqueta_real = "Desconocido"
 
 # ==========================================
-# REPOSICIONAMIENTO CENTRAL: 1. Área de Inferencia y Clasificación (Arriba)
+# Inferencia y Clasificación en Tiempo Real
 # ==========================================
 st.markdown("<br>", unsafe_allow_html=True)
-st.subheader("🔮 Inferencia y Clasificación en Tiempo Real")
+st.subheader("Inferencia y Clasificación en Tiempo Real")
 
 col_img, col_pred = st.columns([1, 2.2], gap="large")
 
@@ -166,13 +165,14 @@ with col_img:
     st.markdown("**Imagen Seleccionada del Dataset:**")
     matriz_imagen = imagen_seleccionada.reshape(28, 28)
     
-    # Adaptación estética del contenedor de la imagen manuscrita
     fig_img, ax_img = plt.subplots(figsize=(2.8, 2.8))
     fig_img.patch.set_facecolor("#0A0E17")
-    ax_img.imshow(matriz_imagen, cmap="plasma") # Paleta de alta visibilidad para pantallas oscuras
+    ax_img.imshow(matriz_imagen, cmap="plasma") 
     ax_img.axis("off")
     st.pyplot(fig_img)
-    st.markdown(f"Etiqueta Origen: `<span style='color:#00F2FE; font-weight:bold;'>{etiqueta_real}</span>`", unsafe_allow_html=True)
+    
+    # SOLUCIÓN: Agregado unsafe_allow_html=True para que renderice la etiqueta de color correctamente
+    st.markdown(f"Etiqueta Origen: <span style='color:#00F2FE; font-weight:bold;'>{etiqueta_real}</span>", unsafe_allow_html=True)
 
 with col_pred:
     st.markdown("**Análisis Predictivo de los Modelos Enlazados:**")
@@ -192,8 +192,8 @@ with col_pred:
     cluster_predicho = kmeans_model.predict(imagen_pca_completa)[0]
     clase_predicha_svm = svm_model.predict(imagen_pca_completa)[0]
     
-    st.info(f"🔹 **Agrupación K-Means (No Supervisado):** `Clúster {cluster_predicho}`")
-    st.success(f"🎯 **Clasificación Final SVM (Supervisado):** `Dígito {clase_predicha_svm}`")
+    st.info(f"Clúster Asignado por K-Means (No Supervisado): Clúster {cluster_predicho}")
+    st.success(f"Clasificación Final SVM (Supervisado): Dígito {clase_predicha_svm}")
     
     st.markdown(f"""
     **Explicación del Proceso:** La imagen original de 784 dimensiones (28x28 píxeles) extraída del archivo CSV se comprimió usando los componentes principales de PCA. 
@@ -204,9 +204,9 @@ with col_pred:
 st.markdown("<hr style='border: 1px solid #232D3F;'>", unsafe_allow_html=True)
 
 # ==========================================
-# REPOSICIONAMIENTO CENTRAL: 2. Estructura de Gráficas Geométricas (Abajo)
+# Estructura de Gráficas Geométricas
 # ==========================================
-st.subheader("📈 Topología Espacial del Modelo")
+st.subheader("Topología Espacial del Modelo")
 col_graph1, col_graph2 = st.columns(2, gap="large")
 
 with col_graph1:
@@ -216,7 +216,6 @@ with col_graph1:
         fig1.patch.set_facecolor("#0A0E17")
         ax1.set_facecolor("#161B26")
         
-        # Gráfica estilizada con paleta de alto contraste cósmico
         sns.scatterplot(
             data=df_pca, x="PC1", y="PC2", hue="label", 
             palette="Spectral", alpha=0.5, ax=ax1, legend="full", edgecolor="none"
@@ -228,7 +227,7 @@ with col_graph1:
         ax1.legend(facecolor="#161B26", edgecolor="#232D3F", labelcolor="#F0F4F8", fontsize=7)
         st.pyplot(fig1)
     else:
-        st.info("Sube el archivo `outputs/mnist_resultados_pca.csv` para ver la proyección 2D.")
+        st.info("Sube el archivo outputs/mnist_resultados_pca.csv para ver la proyección 2D.")
 
 with col_graph2:
     st.markdown("**Estructura de Centroides (K-Means)**")
@@ -237,7 +236,6 @@ with col_graph2:
         fig2.patch.set_facecolor("#0A0E17")
         ax2.set_facecolor("#161B26")
         
-        # Paleta coordinada para la visualización de Clusters
         sns.scatterplot(
             data=df_pca, x="PC1", y="PC2", hue="cluster", 
             palette="coolwarm", alpha=0.5, ax=ax2, legend="full", edgecolor="none"
@@ -249,4 +247,4 @@ with col_graph2:
         ax2.legend(facecolor="#161B26", edgecolor="#232D3F", labelcolor="#F0F4F8", fontsize=7)
         st.pyplot(fig2)
     else:
-        st.info("Sube el archivo `outputs/mnist_resultados_pca.csv` para ver las agrupaciones de K-Means.")
+        st.info("Sube el archivo outputs/mnist_resultados_pca.csv para ver las agrupaciones de K-Means.")
